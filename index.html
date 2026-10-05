@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALGORITMIA: La Ilusión de la Autonomía</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-green: #238636;
+            --accent-cyan: #58a6ff;
+            --accent-red: #da3633;
+            --accent-warning: #d29922;
+            --text-main: #c9d1d9;
+            --text-bright: #f0f6fc;
+            --border-color: #30363d;
+            --font-mono: 'Courier New', Courier, monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #010409;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title-area h1 {
+            color: var(--accent-cyan);
+            font-size: 1.4rem;
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .title-area p {
+            font-size: 0.85rem;
+            color: #8b949e;
+        }
+
+        .status-panel {
+            background: #0d1117;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            min-width: 240px;
+        }
+
+        .metric-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+            color: #8b949e;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar-bg {
+            background-color: #21262d;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 50%;
+            background-color: var(--accent-warning);
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        main {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .narrative-box {
+            background-color: #0d1117;
+            border-left: 4px solid var(--accent-cyan);
+            padding: 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            color: var(--text-bright);
+        }
+
+        .quote-box {
+            font-style: italic;
+            color: #8b949e;
+            border-left: 2px solid var(--border-color);
+            padding-left: 15px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .concept-tag {
+            display: inline-block;
+            background-color: rgba(88, 166, 255, 0.15);
+            color: var(--accent-cyan);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            margin-bottom: 15px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background-color: #21262d;
+            color: var(--text-bright);
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .option-btn:hover {
+            background-color: #30363d;
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .option-btn .btn-title {
+            font-weight: bold;
+            color: var(--accent-cyan);
+        }
+
+        .feedback-card {
+            background-color: #161b22;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .feedback-card h3 {
+            color: var(--accent-warning);
+            margin-bottom: 10px;
+            font-family: var(--font-mono);
+        }
+
+        .reflection-questions {
+            background-color: #0d1117;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .reflection-questions ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .reflection-questions li {
+            margin-bottom: 8px;
+        }
+
+        .restart-btn {
+            background-color: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1rem;
+            transition: background 0.2s ease;
+        }
+
+        .restart-btn:hover {
+            background-color: #2ea043;
+        }
+
+        footer {
+            background-color: #010409;
+            padding: 15px 30px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: #8b949e;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .status-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="title-area">
+            <h1>NEXUS-OS // AUDITORÍA SOCIOTÉCNICA</h1>
+            <p>Modulo de Evaluación de Autonomía Digital Docente</p>
+        </div>
+        <div class="status-panel">
+            <div class="metric-title">
+                <span>Índice de Autonomía Digital</span>
+                <span id="autonomy-val">50%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="autonomy-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-content">
+        <!-- El contenido dinámico se carga vía JS -->
+    </main>
+
+    <footer>
+        Basado en los conceptos pedagógicos y sociotécnicos de Cristóbal Cobo en <em>"Acepto las Condiciones"</em> (2019).
+    </footer>
+</div>
+
+<script>
+    // Estado de la aplicación
+    let currentAutonomy = 50;
+    let historyPath = [];
+
+    // Nodos de la historia bifurcada
+    const storyData = {
+        start: {
+            concept: "CONTEXTO: El Poder Gris y la Configuración Predeterminada",
+            text: "Te han asignado la dirección del curso de Licenciatura en la Universidad de Veridiana. La administración ha instalado <strong>NEXUS-OS</strong>, un software 'inteligente' que promete personalizar automáticamente el aprendizaje de tus estudiantes, optimizar tiempos y predecir quiénes reprobarán basándose en su huella digital.",
+            quote: "'Eligiendo no elegir es lo que hacemos la mayoría cuando aceptamos los servicios en línea de forma predeterminada... transferimos esas atribuciones a los sistemas digitales.' — Cristóbal Cobo",
+            options: [
+                {
+                    title: "Opción A: Aceptar los parámetros por defecto de NEXUS-OS",
+                    desc: "Permitir que el algoritmo filtre las lecturas, organice los grupos y establezca los ritmos de clase automáticamente para ganar eficiencia temporal.",
+                    autonomyDelta: -20,
+                    nextStep: "node_default"
+                },
+                {
+                    title: "Opción B: Auditar el sistema y exigir transparencia algorítmica",
+                    desc: "Rechazar la configuración predeterminada. Exigir ver qué datos extrae la plataforma y diseñar una curaduría pedagógica manual e híbrida.",
+                    autonomyDelta: +20,
+                    nextStep: "node_audit"
+                }
+            ]
+        },
+
+        node_default: {
+            concept: "DILEMA: La Sedación de los Smartphone Zombies",
+            text: "Has aceptado la configuración predeterminada. A las pocas semanas, notas que tus estudiantes están sumamente satisfechos: el sistema solo les muestra videos cortos y lecturas hiper-simplificadas que coinciden con sus gustos previos. Sin embargo, en los debates presenciales, muestran una preocupante incapacidad para concentrarse, analizar textos complejos o tolerar puntos de vista discrepantes. Se han convertido en 'Smartphone Zombies' pedagógicos.",
+            quote: "'En vez de personas con más poder, más bien vemos cada vez más smartphone zombies preocupados por estar al día... anestesiados ante un teléfono que nos llena de microactualizaciones que ocultan lo sustantivo.' — Cristóbal Cobo",
+            options: [
+                {
+                    title: "Opción A1: Delegar también la evaluación a la Inteligencia Artificial",
+                    desc: "Asumir que el sistema 'sabe más' y dejar que la IA califique el nivel de atención y rendimiento de los estudiantes automáticamente.",
+                    autonomyDelta: -25,
+                    nextStep: "final_servidumbre"
+                },
+                {
+                    title: "Opción A2: Intervenir manualmente con talleres de lectura crítica en papel",
+                    desc: "Ruptura parcial: Forzar la desconexión durante 2 horas semanales para leer textos impresos sin notificaciones digitales.",
+                    autonomyDelta: +10,
+                    nextStep: "final_hibrido"
+                }
+            ]
+        },
+
+        node_audit: {
+            concept: "DILEMA: Desobediencia Tecnológica vs. Eficiencia",
+            text: "Al rechazar la automatización predeterminada, la plataforma NEXUS-OS envía una alerta a la decanatura acusándote de 'ineficiencia operativa'. Sin embargo, en el aula has logrado que tus estudiantes identifiquen cómo la plataforma extraía sus metadatos de atención para vender perfiles publicitarios. Los estudiantes piden actuar.",
+            quote: "'Aprender a pensar autónomamente (sin prótesis digitales) guardará relación con ampliar los espacios para la desobediencia tecnológica y de reflexión crítica.' — Cristóbal Cobo",
+            options: [
+                {
+                    title: "Opción B1: Decretar un 'Apagón Digital Absoluto' en el curso",
+                    desc: "Prohibir el uso de cualquier dispositivo digital o internet dentro y fuera del aula durante el resto del semestre.",
+                    autonomyDelta: -10,
+                    nextStep: "final_tecnofobia"
+                },
+                {
+                    title: "Opción B2: Diseñar una estrategia de Desobediencia Tecnológica y Ofuscación",
+                    desc: "Utilizar las tecnologías de forma crítica: alimentar el algoritmo con datos falsos (ofuscación) y crear una red local ética y abierta para compartir el conocimiento sin vigilancia.",
+                    autonomyDelta: +25,
+                    nextStep: "final_soberania"
+                }
+            ]
+        },
+
+        // FINALES Y RETROALIMENTACIÓN
+        final_servidumbre: {
+            isFinal: true,
+            title: "FINAL 1: Servidumbre Digital Absoluta",
+            concept: "Resultado: Feudalismo Digital en la Educación",
+            text: "Tu índice de autonomía se ha reducido al mínimo. Has delegado la función pedagógica al 'Poder Gris'. Los estudiantes han perdido la capacidad de pensamiento crítico autónomo y tú te has convertido en un mero administrador de métricas algorítmicas.",
+            analysis: "Al renunciar a la toma de decisiones pedagógicas por comodidad, has reproducido las asimetrías de información que advierte Cobo. Los estudiantes aceptaron pasivamente los términos y condiciones de su propia enajenación cognitiva.",
+            questions: [
+                "¿En qué momentos de tu práctica docente habitual cedes autonomía pedagógica a las plataformas corporativas por razones de tiempo o comodidad?",
+                "¿Cómo afecta a la democracia futura que los maestros deleguen la curaduría del conocimiento a sistemas algorítmicos opacos?"
+            ]
+        },
+
+        final_hibrido: {
+            isFinal: true,
+            title: "FINAL 2: Control Híbrido e Ilusión de Resistencia",
+            concept: "Resultado: Resistencia Pasiva con Límites",
+            text: "Lograste rescatar ciertos espacios de reflexión presencial, pero la infraestructura básica del curso sigue dependiendo de la vigilancia extractiva de NEXUS-OS. Existe un equilibrio tenso.",
+            analysis: "Tu postura refleja el diagnóstico actual de la mayoría de las instituciones: intentos aislados de desconexión sin transformar las reglas estructurales del sistema digital. Es un paso inicial, pero insuficiente para lograr una verdadera alfabetización digital crítica.",
+            questions: [
+                "¿Es suficiente crear 'oasis analógicos' (sin pantallas) o se requiere enseñar a auditar directamente las herramientas digitales que usamos?",
+                "¿Qué entiendes por 'incomodidad por el silencio digital' en tus estudiantes y cómo puedes gestionarla pedagógicamente?"
+            ]
+        },
+
+        final_tecnofobia: {
+            isFinal: true,
+            title: "FINAL 3: Tecnofobia e Inoperancia Crítica",
+            concept: "Resultado: Aislamiento Digital Neoluddita",
+            text: "El apagón digital absoluto protegió a tus alumnos de la vigilancia en el aula, pero los dejó desarmados e inadaptados frente al entorno hiperconectado real fuera de la universidad.",
+            analysis: "Cobo advierte que el problema no se resuelve rechazando ingenuamente la tecnología o añorando un pasado analógico puritano, sino comprendiendo las nuevas reglas del juego e interviniéndolas con sentido sociopolítico.",
+            questions: [
+                "¿Por qué la prohibición total del teléfono móvil resulta pedagógicamente ineficaz a largo plazo?",
+                "¿Cómo diferencia el autor entre 'habilidades técnicas aisladas' y 'alfabetización digital crítica'?"
+            ]
+        },
+
+        final_soberania: {
+            isFinal: true,
+            title: "FINAL 4: Soberanía Cognitiva y Citizenship Digital Crítica",
+            concept: "Resultado: Desobediencia Tecnológica Emancipadora",
+            text: "¡Felicidades! Has alcanzado el nivel máximo de Autonomía Digital. Tus estudiantes no solo comprenden el 'Poder Gris' y la economía de los datos, sino que han desarrollado herramientas éticas para auditar sistemas e intervenir su realidad digital.",
+            analysis: "Has aplicado con éxito los principios centrales de 'Acepto las Condiciones'. Transformaste la clase en un espacio de alfabetización digital crítica, promoviendo la soberanía sobre los propios datos y el uso consciente y ético de la tecnología.",
+            questions: [
+                "¿Qué proyectos de 'desobediencia tecnológica' o soberanía de datos podrías diseñar con niños o jóvenes en tu futura comunidad educativa?",
+                "¿Cómo enseñarías a otros colegas docentes a 'abrir las cajas negras' de las aplicaciones educativas que utilizan a diario?"
+            ]
+        }
+    };
+
+    function updateUI() {
+        const autonomyVal = document.getElementById("autonomy-val");
+        const autonomyBar = document.getElementById("autonomy-bar");
+        
+        // Clampar valor entre 0 y 100
+        currentAutonomy = Math.max(0, Math.min(100, currentAutonomy));
+
+        autonomyVal.textContent = `${currentAutonomy}%`;
+        autonomyBar.style.width = `${currentAutonomy}%`;
+
+        if (currentAutonomy < 30) {
+            autonomyBar.style.backgroundColor = "var(--accent-red)";
+        } else if (currentAutonomy < 70) {
+            autonomyBar.style.backgroundColor = "var(--accent-warning)";
+        } else {
+            autonomyBar.style.backgroundColor = "var(--accent-green)";
+        }
+    }
+
+    function renderNode(nodeKey) {
+        const app = document.getElementById("app-content");
+        const data = storyData[nodeKey];
+
+        if (!data) return;
+
+        if (data.isFinal) {
+            let html = `
+                <span class="concept-tag">${data.concept}</span>
+                <div class="narrative-box">
+                    <h2 style="color:var(--accent-cyan); margin-bottom:10px;">${data.title}</h2>
+                    <p>${data.text}</p>
+                </div>
+
+                <div class="feedback-card">
+                    <h3>ANÁLISIS PEDAGÓGICO DE TUS DECISIONES</h3>
+                    <p>${data.analysis}</p>
+
+                    <div class="reflection-questions">
+                        <strong>Preguntas de Reflexión para tu Práctica Docente:</strong>
+                        <ul>
+                            ${data.questions.map(q => `<li>${q}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="restart-btn" onclick="resetApp()">Reiniciar Auditoría Sociotécnica</button>
+            `;
+            app.innerHTML = html;
+        } else {
+            let html = `
+                <span class="concept-tag">${data.concept}</span>
+                <div class="narrative-box">
+                    <p>${data.text}</p>
+                    ${data.quote ? `<div class="quote-box">${data.quote}</div>` : ''}
+                </div>
+
+                <div class="options-container">
+                    ${data.options.map((opt, idx) => `
+                        <button class="option-btn" onclick="makeChoice(${opt.autonomyDelta}, '${opt.nextStep}')">
+                            <span class="btn-title">${opt.title}</span>
+                            <span>${opt.desc}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            app.innerHTML = html;
+        }
+
+        updateUI();
+    }
+
+    function makeChoice(delta, nextNode) {
+        currentAutonomy += delta;
+        renderNode(nextNode);
+    }
+
+    function resetApp() {
+        currentAutonomy = 50;
+        renderNode("start");
+    }
+
+    // Inicializar la app
+    document.addEventListener("DOMContentLoaded", () => {
+        renderNode("start");
+    });
+</script>
+
+</body>
+</html>
